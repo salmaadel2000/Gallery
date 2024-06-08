@@ -1,0 +1,36 @@
+/* Styling for the navbar */
+.navbar {
+  background-color: rgb(8, 51, 68) !important;
+}
+
+/* Styling for the title in the navbar */
+.title {
+  flex-grow: 1; /* Allows the title to grow and fill the available space */
+  font-family: inherit; /* Inherits font family from parent */
+  font-weight: normal; /* Normal font weight */
+  cursor: pointer; /* Displays pointer cursor on hover */
+}
+
+/* Styling for the links in the navbar */
+.link {
+  color: white; /* Sets link text color to white */
+  text-decoration: none; /* Removes underline from links */
+  
+  /* Styling for link hover state */
+  &:hover {
+    text-decoration: underline; /* Underlines link text on hover */
+    color: rgb(13, 148, 136); /* Changes link text color on hover */
+  }
+}
+
+/* Styling for buttons in the navbar */
+.button {
+  background-color: rgb(13, 148, 136) !important; /* Sets button background color */
+  margin-left: 20px !important; /* Sets left margin for button */
+  color: white; /* Sets button text color to white */
+  
+  /* Styling for button hover state */
+  &:hover {
+    text-decoration: underline; /* Underlines button text on hover */
+  }
+}

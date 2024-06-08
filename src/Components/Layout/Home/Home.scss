@@ -1,0 +1,38 @@
+.home {
+    .home-header {
+      position: relative;
+      height: 85vh;
+      background: url('https://i.pinimg.com/564x/ed/02/f6/ed02f6a28c855aa4e9686378e58cb177.jpg') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      margin-bottom: 50px;
+  
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+  
+        h1 {
+          font-size: 3rem;
+          margin: 0;
+        }
+  
+        p {
+          font-size: 1.5rem;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+  

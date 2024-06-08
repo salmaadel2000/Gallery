@@ -1,0 +1,84 @@
+// Styling for the Material-UI Container
+.css-nzinn5-MuiContainer-root {
+  position: absolute;
+  height: 90vh;
+  max-width: 100vw !important;
+  background-image: url("https://i.pinimg.com/564x/18/3c/88/183c8870cdea50aa14e84823af23ef69.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  // Styling for the Button within the Container
+  .css-1fu7jd5-MuiButtonBase-root-MuiButton-root {
+    margin-top: 20px;
+    background-color: rgb(22 78 99);
+
+    &:hover {
+      background-color: rgb(13 148 136);
+    }
+  }
+}
+
+// Styling for the Auth Box
+.auth-box {
+  margin: 100px auto;
+  padding: 20px;
+  background-color: rgb(8 51 68);
+  border-radius: 8px;
+  box-shadow: 0 3px 5px rgba(180, 185, 185, 0.1);
+  max-width: 400px;
+  font-family: inherit;
+  color: white;
+  padding-top: 50px;
+  padding-bottom: 50px;
+
+  form {
+    color: white;
+
+    // Styling for the TextField inputs in Material-UI
+    .MuiInputBase-input {
+      color: white;
+      background-color: inherit !important;
+
+      &:focus {
+        border-color: rgb(6 182 212);
+      }
+
+      &:not(:placeholder-shown) {
+        background-color: inherit !important;
+      }
+    }
+
+    // Styling the underline of the TextField inputs
+    .MuiInput-underline:before {
+      border-bottom: 1px solid white;
+    }
+
+    .MuiInput-underline:after {
+      border-bottom: 2px solid white;
+    }
+
+    // Styling for the input labels in Material-UI
+    .MuiInputLabel-root {
+      color: white;
+    }
+
+    // Styling the outline of the TextField inputs
+    .MuiOutlinedInput-root {
+      fieldset {
+        border-color: white;
+      }
+
+      &:hover fieldset {
+        border-color: rgb(8 145 178);
+      }
+
+      &:not(.Mui-focused) fieldset {
+        border-color: inherit;
+      }
+
+      .MuiInputBase-input:not(:placeholder-shown) {
+        background-color: inherit;
+      }
+    }
+  }
+}

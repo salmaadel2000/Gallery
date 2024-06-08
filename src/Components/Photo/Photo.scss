@@ -1,0 +1,41 @@
+.photo-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  background-color: rgba(8, 51, 68, 0.8);
+  transition: transform 0.2s ease-in-out;
+  margin-bottom: 30px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0.5;
+    transition: opacity 0.5s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  button {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color:rgb(15 118 110);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px; 
+    font-size: 16px; 
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: rgb(13 148 136);
+    }
+  }
+}

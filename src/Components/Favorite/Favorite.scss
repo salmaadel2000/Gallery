@@ -1,0 +1,121 @@
+.wishlist {
+  padding: 20px;
+.no-img{
+  margin-top: 50px;
+  height: 40vh;
+} 
+  h2 , .no-img {
+    margin-bottom: 20px;
+    font-size: 33px;
+    color: rgb(13, 148, 136);
+    position: relative;
+    z-index: 1;
+  }
+
+  .wishlist-grid {
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: start;
+    z-index: 1;
+
+    .wishlist-item {
+      margin-top: 50px;
+      margin: 0 20px 70px;
+      width: 30%;
+      padding: 0 10px;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+
+      img {
+        margin: 10px 0;
+        width: 100%;
+        height: 400px !important;
+        display: block;
+        transition: transform 0.3s ease-in-out;
+        cursor: pointer;
+      }
+
+      &:hover img {
+        transform: scale(1.1);
+      }
+
+      button {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgb(15, 118, 110);
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-size: 16px;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover {
+          background-color: rgb(13, 148, 136);
+        }
+      }
+    }
+  }
+
+  /* Responsive design for different screen sizes */
+  @media (max-width: 1200px) {
+    .wishlist-grid .wishlist-item {
+      width: 45%;
+      margin: 0 10px 70px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .wishlist-grid .wishlist-item {
+      width: 100%;
+      margin: 0 0 70px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .wishlist-grid .wishlist-item {
+      width: 100%;
+      margin: 0 0 50px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    .wishlist-item button {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+  }
+}
+
+/* SweetAlert2 custom button styles */
+.mui-confirm-button {
+  background-color: #d32f2f !important; /* Material-UI error color */
+  color: white !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 10px 20px !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease-in-out !important;
+}
+
+.mui-cancel-button {
+  background-color: #757575 !important; /* Material-UI default color */
+  color: white !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 10px 20px !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease-in-out !important;
+}
