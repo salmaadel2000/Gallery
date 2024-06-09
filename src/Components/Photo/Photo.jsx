@@ -6,13 +6,18 @@ import './Photo.scss';
 const Photo = ({ photo, addToWishlistFirestore, favorites = [] }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   const handleClick = () => {
-    if (favorites.some(favorite => favorite.id === photo.id)) {
-      setMessage('This image is already in your favorites.');
+    if (!isLoggedIn) {
+      setMessage('You need to log in to add this image to your favorites.');
     } else {
-      addToWishlistFirestore(photo);
-      setMessage('Okay, this image has been added to your favorites page.');
+      if (favorites.some((favorite) => favorite.id === photo.id)) {
+        setMessage('This image is already in your favorites.');
+      } else {
+        addToWishlistFirestore(photo);
+        setMessage('Okay, this image has been added to your favorites page.');
+      }
     }
     setOpen(true);
   };
@@ -22,7 +27,7 @@ const Photo = ({ photo, addToWishlistFirestore, favorites = [] }) => {
       const timer = setTimeout(() => {
         setOpen(false);
         setMessage(''); // Reset the message when closing the Snackbar
-      }, 2000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [open]);
@@ -37,7 +42,12 @@ const Photo = ({ photo, addToWishlistFirestore, favorites = [] }) => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         onClose={() => setOpen(false)}
       >
-        <MuiAlert elevation={6} variant="filled" severity="success" sx={{ width: '100%' }}>
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          severity={isLoggedIn ? 'success' : 'error'}
+          sx={{ width: '100%' }}
+        >
           {message}
         </MuiAlert>
       </Snackbar>

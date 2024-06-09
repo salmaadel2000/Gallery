@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss'; // Importing styles
-import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'; // Importing routing components
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'; // Importing routing components
 import { auth } from './firebase/firebaseConfig'; // Importing Firebase authentication
 import AuthComponent from './Components/Auth/AuthComponent'; // Importing authentication component
 import Navbar from './Components/Layout/Navbar/Navbar'; // Importing Navbar component
@@ -75,14 +75,12 @@ function App() {
         {/* Default route */}
         <Route path="/" element={<AuthComponent isSignIn={false} />} />
         
-        {/* Route for favorite page */}
-        <Route path="/favorite" element={<Favorite />} />
-        
         {/* Route for photo grid page */}
         <Route path="/photos" element={<PhotoGrid />} />
         
-        {/* Fallback route */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        {/* Protected route for favorite page */}
+        <Route path="/favorite" element={<Favorite />} />
+        <Route path="*" element={<AuthComponent isSignIn={true} />}/>
       </Routes>
 
       {/* Footer component */}
