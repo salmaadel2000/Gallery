@@ -4,7 +4,7 @@ import withReactContent from 'sweetalert2-react-content';
 import { imgdb, db, auth } from '../../firebase/firebaseConfig';
 import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import 'sweetalert2/src/sweetalert2.scss';
 import './Favorite.scss';
 
@@ -98,7 +98,12 @@ const Wishlist = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loading-container">
+      <CircularProgress style={{ color: 'rgb(15, 118, 110)', width: '100px', height: '100px' }} />
+    </div>
+
+    );
   }
 
   return (

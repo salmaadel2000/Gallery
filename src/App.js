@@ -28,7 +28,7 @@ function App() {
 
     // Cleanup function to unsubscribe from Firebase listener
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
   // Function to handle user logout
   const handleLogout = async () => {

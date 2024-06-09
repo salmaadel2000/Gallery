@@ -13,18 +13,18 @@ const Navbar = ({ user, onLogout }) => {
           Gallery
         </Typography>
         {/* Home NavLink */}
-        <NavLink to="/home" className="link" activeClassName="active">
+        <NavLink to="/home" className="link" activeclassname="active">
           <Button color="inherit">Home</Button>
         </NavLink>
         {/* Conditionally rendering Login and Register NavLink */}
         {!user ? ( // Using ternary operator to check user authentication
           <>
             {/* Login NavLink */}
-            <NavLink to="/login" className="link" activeClassName="active">
+            <NavLink to="/login" className="link" activeclassname="active">
               <Button color="inherit">Login</Button>
             </NavLink>
             {/* Register NavLink */}
-            <NavLink to="/" className="link" activeClassName="active">
+            <NavLink to="/" className="link" activeclassname="active">
               <Button color="inherit">Register</Button>
             </NavLink>
           </>
@@ -32,7 +32,7 @@ const Navbar = ({ user, onLogout }) => {
           // Conditionally rendering Favorite NavLink and Logout Button if user is authenticated
           <>
             {/* Favorite NavLink */}
-            <NavLink to="/favorite" className="link" activeClassName="active">
+            <NavLink to="/favorite" className="link" activeclassname="active">
               <Button color="inherit">Favorite</Button>
             </NavLink>
             {/* Logout Button */}
