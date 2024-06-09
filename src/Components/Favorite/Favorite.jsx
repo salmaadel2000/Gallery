@@ -11,7 +11,7 @@ import './Favorite.scss';
 // SweetAlert2 with React content
 const MySwal = withReactContent(Swal);
 
-const Wishlist = () => {
+const Favorite = () => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,29 +21,33 @@ const Wishlist = () => {
       try {
         // Check if the user is authenticated
         const user = auth.currentUser;
-        if (!user) {
-          console.error('User not authenticated.');
+        if (user) {
+          // Construct the storage path with the user's UID
+          const storageRef = ref(imgdb, `users/${user.uid}/favourite`);
+
+          // List all items in the storage path
+          const listResult = await listAll(storageRef);
+
+          // Get download URLs and create wishlist items
+          const urls = await Promise.all(listResult.items.map(async (itemRef) => {
+            const url = await getDownloadURL(itemRef);
+            const description = `Description for ${itemRef.name}`; // Placeholder for description
+            return { id: itemRef.name, url, description };
+          }));
+
+          // Save wishlist data to local storage
+          localStorage.setItem('wishlist', JSON.stringify(urls));
+
+          setWishlist(urls);
           setLoading(false);
-          return;
+        } else {
+          // If user is not authenticated, load wishlist from local storage
+          const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+          setWishlist(localWishlist);
+          setLoading(false);
         }
-
-        // Construct the storage path with the user's UID
-        const storageRef = ref(imgdb, `users/${user.uid}/favourite`);
-
-        // List all items in the storage path
-        const listResult = await listAll(storageRef);
-
-        // Get download URLs and create wishlist items
-        const urls = await Promise.all(listResult.items.map(async (itemRef) => {
-          const url = await getDownloadURL(itemRef);
-          const description = `Description for ${itemRef.name}`; // Placeholder for description
-          return { id: itemRef.name, url, description };
-        }));
-
-        setWishlist(urls);
-        setLoading(false);
       } catch (error) {
-        console.error('Error fetching wishlist:', error);
+        console.error('Error fetching wishlist:', error.message);
         setLoading(false);
       }
     };
@@ -52,63 +56,64 @@ const Wishlist = () => {
   }, []);
 
   // Handle removal of an item from the wishlist
-  const removeFromWishlist = async (id) => {
-    // Confirmation dialog using SweetAlert2
-    const result = await MySwal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
-      customClass: {
-        confirmButton: 'mui-confirm-button',
-        cancelButton: 'mui-cancel-button',
-      },
-      buttonsStyling: false,
-    });
+ // Handle removal of an item from the wishlist
+// Handle removal of an item from the wishlist
+const removeFromWishlist = async (id) => {
+  // Confirmation dialog using SweetAlert2
+  const result = await MySwal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel',
+    customClass: {
+      confirmButton: 'mui-confirm-button',
+      cancelButton: 'mui-cancel-button',
+    },
+    buttonsStyling: false,
+  });
 
-    if (result.isConfirmed) {
-      try {
-        // Check if the user is authenticated
-        const user = auth.currentUser;
-        if (!user) {
-          console.error('User not authenticated.');
-          return;
-        }
-
-        // Delete the image from Firebase storage based on user-specific path
-        const imageRef = ref(imgdb, `users/${user.uid}/favourite/${id}`);
-        await deleteObject(imageRef);
-
-        // Delete the corresponding document from Firestore
-        const docRef = doc(db, `users/${user.uid}/wishlist`, id);
-        await deleteDoc(docRef);
-
-        // Update the local state to reflect the removal
-        const updatedWishlist = wishlist.filter(photo => photo.id !== id);
-        setWishlist(updatedWishlist);
-
-        MySwal.fire('Deleted!', 'Your file has been deleted.', 'success');
-      } catch (error) {
-        console.error('Error removing from wishlist:', error);
-        MySwal.fire('Error!', 'There was a problem deleting the file.', 'error');
+  if (result.isConfirmed) {
+    const updatedWishlist = wishlist.filter(photo => photo.id !== id);
+    setWishlist(updatedWishlist);
+    try {
+      // Check if the user is authenticated
+      const user = auth.currentUser;
+      if (!user) {
+        console.error('User not authenticated.');
+        return;
       }
+      localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+      // Delete the image from Firebase storage based on user-specific path
+      const imageRef = ref(imgdb, `users/${user.uid}/favourite/${id}`);
+      await deleteObject(imageRef);
+
+      // Delete the corresponding document from Firestore
+      const docRef = doc(db, `users/${user.uid}/wishlist`, id);
+      await deleteDoc(docRef);
+
+
+      MySwal.fire('Deleted!', 'Your file has been deleted.', 'success');
+    } catch (error) {
+      console.error('Error removing from wishlist:', error.message);
+      MySwal.fire('Error!', 'There was a problem deleting the file.', 'error');
     }
-  };
+  }
+};
+
 
   if (loading) {
     return (
       <div className="loading-container">
-      <CircularProgress style={{ color: 'rgb(15, 118, 110)', width: '100px', height: '100px' }} />
-    </div>
-
+        <CircularProgress style={{ color: 'rgb(15, 118, 110)', width: '100px', height: '100px' }} />
+      </div>
     );
   }
 
   return (
     <div className="wishlist">
-       <h2>My Favorite</h2>
+      <h2>My Favorite</h2>
       {wishlist.length === 0 ? (
         <div className='no-img'>No images in your favorite list.</div>
       ) : (
@@ -131,4 +136,4 @@ const Wishlist = () => {
   );
 };
 
-export default Wishlist;
+export default Favorite;

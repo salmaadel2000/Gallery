@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss'; // Importing styles
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'; // Importing routing components
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'; // Importing routing components
 import { auth } from './firebase/firebaseConfig'; // Importing Firebase authentication
 import AuthComponent from './Components/Auth/AuthComponent'; // Importing authentication component
 import Navbar from './Components/Layout/Navbar/Navbar'; // Importing Navbar component
@@ -12,10 +12,11 @@ import PhotoGrid from './Components/PhotoGrid/PhotoGrid'; // Importing PhotoGrid
 function App() {
   const [user, setUser] = useState(null); // State to hold user authentication information
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State to determine if user is logged in
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const location = useLocation(); // Get current location
+  const navigate = useNavigate(); // Get navigate function
 
   useEffect(() => {
-    // Effect to check if user is already logged in based on local storage
+    // Check if user is already logged in based on local storage
     const storedUser = localStorage.getItem('isLoggedIn');
     if (storedUser) {
       setIsLoggedIn(true);
@@ -24,19 +25,39 @@ function App() {
     // Firebase listener to update user state on authentication changes
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
+      if (user) {
+        setIsLoggedIn(true);
+        localStorage.setItem('isLoggedIn', true);
+      } else {
+        setIsLoggedIn(false);
+        localStorage.removeItem('isLoggedIn');
+      }
     });
 
     // Cleanup function to unsubscribe from Firebase listener
     return () => unsubscribe();
-  }, [user]);
+  }, []);
+
+  useEffect(() => {
+    // Store current route in sessionStorage
+    sessionStorage.setItem('currentRoute', location.pathname);
+  }, [location]);
 
   // Function to handle user logout
   const handleLogout = async () => {
     await auth.signOut(); // Sign out user from Firebase authentication
-    localStorage.removeItem('isLoggedIn'); // Remove isLoggedIn flag from local storage
+    sessionStorage.removeItem('currentRoute'); // Remove current route from sessionStorage
     setIsLoggedIn(false); // Update isLoggedIn state to false
     navigate('/login'); // Navigate to login page
   };
+
+  useEffect(() => {
+    // Check if user is logged in and current stored route is '/favorite', then navigate to '/favorite'
+    const currentRoute = sessionStorage.getItem('currentRoute');
+    if (isLoggedIn && currentRoute === '/favorite') {
+      navigate('/favorite');
+    }
+  }, [isLoggedIn]);
 
   return (
     <div>
@@ -46,19 +67,19 @@ function App() {
       {/* Routes for different pages */}
       <Routes>
         {/* Route for home page */}
-        <Route path="/home" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} />
+        <Route path="/home" element={<Home />} />
         
         {/* Route for login page */}
-        <Route path="/login" element={isLoggedIn ? <Navigate to="/home" /> : <AuthComponent isSignIn={true} />} />
+        <Route path="/login" element={<AuthComponent isSignIn={true} />} />
         
         {/* Default route */}
-        <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <AuthComponent isSignIn={false} />} />
+        <Route path="/" element={<AuthComponent isSignIn={false} />} />
         
         {/* Route for favorite page */}
-        <Route path="/favorite" element={isLoggedIn ? <Favorite /> : <Navigate to="/login" />} />
+        <Route path="/favorite" element={<Favorite />} />
         
         {/* Route for photo grid page */}
-        <Route path="/photos" element={isLoggedIn ? <PhotoGrid /> : <Navigate to="/login" />} />
+        <Route path="/photos" element={<PhotoGrid />} />
         
         {/* Fallback route */}
         <Route path="*" element={<Navigate to="/login" />} />

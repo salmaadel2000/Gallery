@@ -2,7 +2,11 @@
 .navbar {
   background-color: rgb(8, 51, 68) !important;
 }
-
+.active {
+  color:rgb(13, 148, 136) !important;
+  font-weight: bold; /* Example styling for active link */
+  /* Add more styles as needed */
+}
 /* Styling for the title in the navbar */
 .title {
   flex-grow: 1; /* Allows the title to grow and fill the available space */
